@@ -702,7 +702,12 @@ a:focus {
     for you.
 */
 
+div#logos {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+
 img.logo {
   margin: 10px;
-  width: 100px;
 }
