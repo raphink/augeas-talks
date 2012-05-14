@@ -58,11 +58,11 @@
 -->
 <div id="impress">
 
-    <div id="awksed" class="step" data-x="-1000" data-y="-2000" data-scale="3">
+    <div id="awksed" class="step" data-x="-1000" data-y="-2200" data-scale="3">
         <q><center>Are you tired of ugly<br /> <b>sed</b> and <b>awk</b> one liners?</center></q>
     </div>
 
-    <div id="libs" class="step" data-x="-1850" data-y="-2000" data-rotate="90">
+    <div id="libs" class="step" data-x="-1850" data-y="-2200" data-rotate="90">
         <q>or of using <i>tons</i> of <br />
            &nbsp;&nbsp;different parsing libraries<br />
            &nbsp;&nbsp;&nbsp;&nbsp;or <b>common::line</b> tricks?</q>
@@ -95,30 +95,30 @@
       ... and their parameters
       into branches and leaves:<br />
       <pre>
- $ augtool print /files/etc/hosts
-    /files/etc/hosts
-    /files/etc/hosts/1
-    /files/etc/hosts/1/ipaddr = "127.0.0.1"
-    /files/etc/hosts/1/canonical = "localhost"
+$ augtool print /files/etc/hosts
+ /files/etc/hosts
+ /files/etc/hosts/1
+ /files/etc/hosts/1/ipaddr = "127.0.0.1"
+ /files/etc/hosts/1/canonical = "localhost"
       </pre>
       </span>
     </div>
 
-
+    <!-- lenses -->
     <div id="lenses" class="step" data-x="500" data-y="2300">
        Augeas provides many stock parsers, called lenses:
        <pre>
-Access		Cron		Host_Conf	Modprobe
-Aliases		Crypttab	Hostname	Modules
-Anacron		debctrl		Hosts_Access	Modules_conf
-Approx		Desktop		IniFile		NagiosConfig
-AptConf		Dhcpd		Inputrc		NagiosObjects
-Automaster	Dpkg		Iptables	Netmasks
-Automounter	Exports		Kdump		NetworkManager
-BackupPCHosts	FAI_DiskConfig	Keepalived	Networks
-cgconfig	Fonts		Keepalived	Nrpe
-cgrules		Fuse		Login_defs	Nsswitch
-Channels	Grub		Mke2fs		Pam
+Access		Cron		Host_Conf
+Aliases		Crypttab	Hostname
+Anacron		debctrl		Hosts_Access
+Approx		Desktop		IniFile
+AptConf		Dhcpd		Inputrc
+Automaster	Dpkg		Iptables
+Automounter	Exports		Kdump
+BackupPCHosts	FAI_DiskConfig	Keepalived
+cgconfig	Fonts		Keepalived
+cgrules		Fuse		Login_defs
+Channels	Grub		Mke2fs
 ...
        </pre>
        <img id="lens" src="img/lens.png" />
@@ -132,6 +132,64 @@ IniFile		Shellvars		Simplevars
 Rx		Shellvars_list		Util
        </pre>
     </div>
+
+    <div id="augtool" class="step" data-x="-3500" data-y="-500">
+      <b>augtool</b> lets you inspect the tree:
+      <pre>
+$ augtool
+augtool&gt; ls /
+  augeas/ = (none)
+  files/ = (none)
+
+augtool&gt; print /files/etc/passwd/root/
+  /files/etc/passwd/root
+  /files/etc/passwd/root/password = "x"
+  /files/etc/passwd/root/uid = "0"
+  /files/etc/passwd/root/gid = "0"
+  /files/etc/passwd/root/name = "root"
+  /files/etc/passwd/root/home = "/root"
+  /files/etc/passwd/root/shell = "/bin/bash"
+      </pre>
+    </div>
+
+    <div id="xpath" class="step" data-x="-4000" data-y="200">
+      The tree can be queried using <b>XPath</b>: 
+      <pre>
+augtool&gt; print /files/etc/passwd/*[uid='0'][1]
+  /files/etc/passwd/root
+  /files/etc/passwd/root/password = "x"
+  /files/etc/passwd/root/uid = "0"
+  /files/etc/passwd/root/gid = "0"
+  /files/etc/passwd/root/name = "root"
+  /files/etc/passwd/root/home = "/root"
+  /files/etc/passwd/root/shell = "/bin/bash"
+      </pre>
+
+      <img id="path" src="img/path.png" />
+    </div>
+
+    <div id="modify" class="step" data-x="-4000" data-y="1000">
+      But also <i>modified</i>: 
+      <pre>
+$ getent passwd root
+root:x:0:0:root:/root:/bin/bash
+
+$ augtool
+augtool&gt; set /files/etc/passwd/*[uid='0']/shell /bin/sh
+augtool&gt; match /files/etc/passwd/*[uid='0']/shell
+  /files/etc/passwd/root/shell = "/bin/sh"
+augtool&gt; save
+Saved 1 file(s)
+augtool&gt; exit
+
+$ getent passwd root
+root:x:0:0:root:/root:/bin/sh
+      </pre>
+    </div>
+
+    <div id="overview" class="step" data-x="500" data-y="1000" data-scale="10">
+    </div>
+
 
 <div class="hint">
     <p>Use a spacebar or arrow keys to navigate</p>

@@ -292,13 +292,13 @@ a:focus {
 
 #tree .bigtree {
     position: absolute;
-    left: -10em;
+    left: -9em;
     bottom: -8em;
 }
 
 .tree-side {
     position: absolute;
-    left: 7em;
+    left: 6.5em;
     top: -3em;
 }
 
@@ -319,9 +319,17 @@ a:focus {
 
 #lenses img#lens {
     position: absolute;
-    width: 200px;
-    top: 70px;
-    left: -200px;
+    width: 150px;
+    top: 300px;
+    right: 0px;
+}
+
+#xpath img#path {
+    position: absolute;
+    width: 3000px;
+    left: -1500px;
+    top: 450px;
+
 }
 
 
