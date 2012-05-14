@@ -57,6 +57,11 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
 }
+code {
+    font-family: 'Inconsolata', monospace;
+    font-size: 40%;
+    line-height: 40%;
+}
 ol, ul {
     list-style: none;
 }
@@ -294,7 +299,7 @@ a:focus {
 
 .tree-side {
     position: absolute;
-    left: 5em;
+    left: 7em;
     top: -3em;
 }
 

@@ -11,6 +11,7 @@
     <meta name="author" content="Bartek Szopka" />
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 
     <link href="css/common.css" rel="stylesheet" />
     
@@ -58,9 +59,9 @@
     </div>
 
     <div id="libs" class="step" data-x="-1850" data-y="-2000" data-rotate="90">
-        <q>or of using <i>tons</i><br />
-           of different parsing libraries<br />
-           or <b>common::line</b> tricks?</q>
+        <q>or of using <i>tons</i> of <br />
+           &nbsp;&nbsp;different parsing libraries<br />
+           &nbsp;&nbsp;&nbsp;&nbsp;or <b>common::line</b> tricks?</q>
     </div>
 
     <div id="title" class="step" data-x="0" data-y="0" data-scale="4">
@@ -72,12 +73,30 @@
     <!-- It's all about a tree -->
     <div id="tree" class="step" data-x="-1000" data-y="3100">
       <img class="bigtree" src="img/tree-high.png" width="900" />
-      <span class="tree-side">It's all about a tree...</span>
+      <span class="tree-side">You have heard that files
+      are made from trees...</span>
     </div>
 
     <!-- and then move up -->
-    <div id="branches" class="step" data-x="-1000" data-y="2500">
-      <span class="tree-side">with branches</span>
+    <div id="trunk" class="step" data-x="-1000" data-y="2700">
+      <span class="tree-side">Here configuration files
+      are turned into an XML tree...<br />
+      <code>/etc/hosts -&gt; /files/etc/hosts</code>
+      </span>
+    </div>
+
+    <!-- and then move up -->
+    <div id="branches" class="step" data-x="-1000" data-y="2300">
+      <span class="tree-side">and their parameters
+      into the leaves of this tree.<br />
+      <code>
+        augtool print /files/etc/hosts<br />
+           /files/etc/hosts<br />
+           /files/etc/hosts/1<br />
+           /files/etc/hosts/1/ipaddr = "127.0.0.1"<br />
+           /files/etc/hosts/1/canonical = "localhost"
+      </code>
+      </span>
     </div>
 
 
