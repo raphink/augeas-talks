@@ -21,6 +21,10 @@
 
 <body class="impress-not-supported">
 
+<div id='conf-logo'>
+  <img src='img/lsm_logo.jpg' class='logo' width='150px' />
+</div>
+
 <div id='logos'>
   <img src='img/augeas-logo-simple.png' class='logo' width='50px' />
   <img src='img/camptocamp-logo.png' class='logo' width='50px' />
@@ -65,7 +69,7 @@
     </div>
 
     <div id="title" class="step" data-x="0" data-y="0" data-scale="4">
-        <span class="become">become a configuration<br />&nbsp;&nbsp; surgeon with</span>
+        <span class="become">Become a configuration<br />&nbsp;&nbsp; surgeon with</span>
         <h1>Augeas</h1>
         <span class="tree"><img src="img/augeas-logo-simple.png"  width='130px' /></span>
     </div>
@@ -80,26 +84,54 @@
     <!-- and then move up -->
     <div id="trunk" class="step" data-x="-1000" data-y="2700">
       <span class="tree-side">Here configuration files
-      are turned into an XML tree...<br />
-      <code>/etc/hosts -&gt; /files/etc/hosts</code>
+      are turned into a tree structure...<br />
+      <pre>/etc/hosts -&gt; /files/etc/hosts</pre>
       </span>
     </div>
 
-    <!-- and then move up -->
+    <!-- to the top -->
     <div id="branches" class="step" data-x="-1000" data-y="2300">
-      <span class="tree-side">and their parameters
-      into the leaves of this tree.<br />
-      <code>
-        augtool print /files/etc/hosts<br />
-           /files/etc/hosts<br />
-           /files/etc/hosts/1<br />
-           /files/etc/hosts/1/ipaddr = "127.0.0.1"<br />
-           /files/etc/hosts/1/canonical = "localhost"
-      </code>
+      <span class="tree-side">
+      ... and their parameters
+      into branches and leaves:<br />
+      <pre>
+ $ augtool print /files/etc/hosts
+    /files/etc/hosts
+    /files/etc/hosts/1
+    /files/etc/hosts/1/ipaddr = "127.0.0.1"
+    /files/etc/hosts/1/canonical = "localhost"
+      </pre>
       </span>
     </div>
 
 
+    <div id="lenses" class="step" data-x="500" data-y="2300">
+       Augeas provides many stock parsers, called lenses:
+       <pre>
+Access		Cron		Host_Conf	Modprobe
+Aliases		Crypttab	Hostname	Modules
+Anacron		debctrl		Hosts_Access	Modules_conf
+Approx		Desktop		IniFile		NagiosConfig
+AptConf		Dhcpd		Inputrc		NagiosObjects
+Automaster	Dpkg		Iptables	Netmasks
+Automounter	Exports		Kdump		NetworkManager
+BackupPCHosts	FAI_DiskConfig	Keepalived	Networks
+cgconfig	Fonts		Keepalived	Nrpe
+cgrules		Fuse		Login_defs	Nsswitch
+Channels	Grub		Mke2fs		Pam
+...
+       </pre>
+       <img id="lens" src="img/lens.png" />
+    </div>
+
+    <div id="lenses-generic" class="step" data-x="500" data-y="3000">
+       ... as well as generic lenses available to build new parsers:
+       <pre>
+Build		Sep			Simplelines
+IniFile		Shellvars		Simplevars
+Rx		Shellvars_list		Util
+       </pre>
+    </div>
 
 <div class="hint">
     <p>Use a spacebar or arrow keys to navigate</p>

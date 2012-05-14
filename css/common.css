@@ -57,10 +57,9 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
 }
-code {
+code, pre {
     font-family: 'Inconsolata', monospace;
-    font-size: 40%;
-    line-height: 40%;
+    font-size: 60%;
 }
 ol, ul {
     list-style: none;
@@ -316,6 +315,15 @@ a:focus {
 #title .footnote {
     font-size: 32px;
 }
+
+
+#lenses img#lens {
+    position: absolute;
+    width: 200px;
+    top: 70px;
+    left: -200px;
+}
+
 
 /*
     Second step is nothing special, just a text with a link, so it doesn't need
@@ -737,6 +745,11 @@ a:focus {
     Thanks for reading. I hope you enjoyed it at least as much as I enjoyed writing it
     for you.
 */
+div#conf-logo {
+  position:absolute;
+  bottom:0;
+  right:left;
+}
 
 div#logos {
   position:absolute;
