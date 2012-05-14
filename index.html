@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=1024" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>impress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Bartek Szopka @bartaz</title>
+    <title>Become a configuration surgeons with Augeas | by Raphaël Pinson</title>
     
     <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com." />
     <meta name="author" content="Bartek Szopka" />
@@ -138,17 +138,17 @@ Rx		Shellvars_list		Util
       <pre>
 $ augtool
 augtool&gt; ls /
-  augeas/ = (none)
-  files/ = (none)
+ augeas/ = (none)
+ files/ = (none)
 
 augtool&gt; print /files/etc/passwd/root/
-  /files/etc/passwd/root
-  /files/etc/passwd/root/password = "x"
-  /files/etc/passwd/root/uid = "0"
-  /files/etc/passwd/root/gid = "0"
-  /files/etc/passwd/root/name = "root"
-  /files/etc/passwd/root/home = "/root"
-  /files/etc/passwd/root/shell = "/bin/bash"
+ /files/etc/passwd/root
+ /files/etc/passwd/root/password = "x"
+ /files/etc/passwd/root/uid = "0"
+ /files/etc/passwd/root/gid = "0"
+ /files/etc/passwd/root/name = "root"
+ /files/etc/passwd/root/home = "/root"
+ /files/etc/passwd/root/shell = "/bin/bash"
       </pre>
     </div>
 
@@ -156,13 +156,13 @@ augtool&gt; print /files/etc/passwd/root/
       The tree can be queried using <b>XPath</b>: 
       <pre>
 augtool&gt; print /files/etc/passwd/*[uid='0'][1]
-  /files/etc/passwd/root
-  /files/etc/passwd/root/password = "x"
-  /files/etc/passwd/root/uid = "0"
-  /files/etc/passwd/root/gid = "0"
-  /files/etc/passwd/root/name = "root"
-  /files/etc/passwd/root/home = "/root"
-  /files/etc/passwd/root/shell = "/bin/bash"
+ /files/etc/passwd/root
+ /files/etc/passwd/root/password = "x"
+ /files/etc/passwd/root/uid = "0"
+ /files/etc/passwd/root/gid = "0"
+ /files/etc/passwd/root/name = "root"
+ /files/etc/passwd/root/home = "/root"
+ /files/etc/passwd/root/shell = "/bin/bash"
       </pre>
 
       <img id="path" src="img/path.png" />
@@ -177,7 +177,7 @@ root:x:0:0:root:/root:/bin/bash
 $ augtool
 augtool&gt; set /files/etc/passwd/*[uid='0']/shell /bin/sh
 augtool&gt; match /files/etc/passwd/*[uid='0']/shell
-  /files/etc/passwd/root/shell = "/bin/sh"
+ /files/etc/passwd/root/shell = "/bin/sh"
 augtool&gt; save
 Saved 1 file(s)
 augtool&gt; exit
@@ -186,6 +186,30 @@ $ getent passwd root
 root:x:0:0:root:/root:/bin/sh
       </pre>
     </div>
+
+    <!-- puppet: type -->
+
+    <!-- puppet: idempotence -->
+
+    <!-- puppet: defines -->
+
+    <!-- mco agent -->
+
+    <!-- API: ruby -->
+
+    <!-- API: write facts -->
+
+    <!-- API: write types -->
+
+    <!-- simple lens writing/modifying -->
+
+    <!-- error tracking -->
+
+    <!-- others: libvirt, validator -->
+
+    <!-- future: mco 2.0, etc. -->
+
+    <!-- questions/contacts -->
 
     <div id="overview" class="step" data-x="500" data-y="1000" data-scale="10">
     </div>

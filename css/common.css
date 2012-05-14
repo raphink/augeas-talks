@@ -329,7 +329,6 @@ a:focus {
     width: 3000px;
     left: -1500px;
     top: 450px;
-
 }
 
 
@@ -767,4 +766,5 @@ div#logos {
 
 img.logo {
   margin: 10px;
+  z-index: 1000;
 }
