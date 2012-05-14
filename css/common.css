@@ -267,6 +267,19 @@ a:focus {
     transform:         translateZ(20px);
 }
 
+#title .become {
+    font-size: 64px;
+    position: absolute;
+    top: -1.5em;
+    left: 1.5em;
+    
+    -webkit-transform: translateZ(20px);
+    -moz-transform:    translateZ(20px);
+    -ms-transform:     translateZ(20px);
+    -o-transform:      translateZ(20px);
+    transform:         translateZ(20px);
+}
+
 #title h1 {
     font-size: 190px;
     
