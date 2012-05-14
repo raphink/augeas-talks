@@ -271,13 +271,31 @@ a:focus {
     font-size: 64px;
     position: absolute;
     top: -1.5em;
-    left: 1.5em;
+    left: 1em;
+}
+
+#title .tree {
+    position: absolute;
+    bottom: 1em;
+    right: 2em;
     
     -webkit-transform: translateZ(20px);
     -moz-transform:    translateZ(20px);
     -ms-transform:     translateZ(20px);
     -o-transform:      translateZ(20px);
     transform:         translateZ(20px);
+}
+
+#tree .bigtree {
+    position: absolute;
+    left: -10em;
+    bottom: -8em;
+}
+
+.tree-side {
+    position: absolute;
+    left: 5em;
+    top: -3em;
 }
 
 #title h1 {
