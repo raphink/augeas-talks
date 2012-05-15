@@ -188,18 +188,118 @@ root:x:0:0:root:/root:/bin/sh
     </div>
 
     <!-- puppet: type -->
+    <div id="puppet_type" class="step" data-x="-5200" data-y="1300" data-scale="0.7">
+      Puppet has a native provider:
+      <pre>
+augeas{ "export foo" : 
+    context =&gt; "/files/etc/exports",
+    changes =&gt; [
+        "set dir[. = '/foo'] /foo",
+        "set dir[. = '/foo']/client weeble",
+        "set dir[. = '/foo']/client/option[1] ro",
+        "set dir[. = '/foo']/client/option[2] all_squash",
+    ],
+} 
+      </pre>
+      <img id="kermit" src="img/kermit.png" />
+    </div>
 
     <!-- puppet: idempotence -->
 
     <!-- puppet: defines -->
+    <div id="puppet_wrap" class="step" data-x="-5000" data-y="800" data-scale="0.7">
+      It is better to wrap things up: 
+      <pre>
+define kmod::generic(
+  $type, $module, $ensure=present,
+  $command='', $file='/etc/modprobe.d/modprobe.conf'
+) {
+  augeas {"${type} module ${module}":
+    context =&gt; "/files${file}",
+    changes =&gt; [
+      "set ${type}[. = '${module}'] ${module}",
+      "set ${type}[. = '${module}']/command '${command}'",
+    ],
+  }
+}
+      </pre>
+    </div>
 
     <!-- mco agent -->
+    <div id="mco_agent" class="step" data-x="-5200" data-y="0">
+    mcollective also has <a href="https://github.com/camptocamp/mcollective-plugins/tree/master/agent/augeasquery">an agent</a>:
+    <pre>
+$ mco augeas match /files/etc/passwd/rpinson/shell
+
+ * [ ======================================&gt; ] 196 / 196
+
+...
+wrk1                                    
+saja-map-dev                            
+    /files/etc/passwd/rpinson/shell = /bin/bash
+wrk3                                    
+wrk4                                    
+    /files/etc/passwd/rpinson/shell = /bin/bash
+...
+    </pre>
+    </div>
 
     <!-- API: ruby -->
+    <div id="bindings" class="step" data-x="3500" data-y="0">
+    Bindings include Perl, Python, Java, PHP, Haskell, Ruby...
+    <pre>
+require 'augeas'
+aug = Augeas.open
+if aug.match('/augeas/load/'+lens).length &gt; 0
+  aug.set('/augeas/load/'+lens+'/incl[last()+1]', path)
+else
+  aug.set('/augeas/load/'+lens+'/lens', lens+'.lns')
+end
+    </pre>
+    <center class="footnote">From the mcollective agent</center>
+    <img id="chain" src="img/chain.png" />
+    </div>
 
     <!-- API: write facts -->
+    <div id="facts" class="step" data-x="3500" data-y="1000">
+    You can use it with facter:
+    <pre>
+Facter.add(:augeasversion) do setcode do
+    begin
+      require 'augeas'
+      aug = Augeas::open('/', nil, Augeas::NO_MODL_AUTOLOAD)
+      ver = aug.get('/augeas/version')
+      aug.close
+      ver
+    rescue Exception
+      Facter.debug('ruby-augeas not available')
+    end
+  end
+end
+    </pre>
+    <center class="footnote">From the <code>augeasversion</code> fact</center>
+    </div>
+    
 
     <!-- API: write types -->
+    <div id="types" class="step" data-x="3650" data-y="1830">
+    Or to write native types:
+    <pre>
+  def ip
+    aug = nil
+    path = "/files#{self.class.file(resource)}"
+    begin
+      aug = self.class.augopen(resource)
+      aug.get("#{path}/*[canonical =
+         '#{resource[:name]}']/ipaddr")
+    ensure
+      aug.close if aug
+    end
+  end
+    </pre>
+    <center class="footnote">See <a href="https://github.com/domcleal/augeasproviders">https://github.com/domcleal/augeasproviders</a></center>
+    </div>
+    
 
     <!-- simple lens writing/modifying -->
 
@@ -211,7 +311,7 @@ root:x:0:0:root:/root:/bin/sh
 
     <!-- questions/contacts -->
 
-    <div id="overview" class="step" data-x="500" data-y="1000" data-scale="10">
+    <div id="overview" class="step" data-x="-300" data-y="1000" data-scale="11">
     </div>
 
 
