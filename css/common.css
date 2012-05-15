@@ -314,6 +314,7 @@ a:focus {
 
 .footnote {
     font-size: 20px;
+    text-align: center;
 }
 
 
@@ -341,8 +342,28 @@ a:focus {
 #bindings img#chain {
     position: absolute;
     width: 1200px;
-    top: -80px;
-    left: -80px; 
+    top: -50px;
+    left: -50px; 
+}
+
+#others img.logo {
+    width: 80px;
+    padding-right: 20px;
+    vertical-align: middle;
+}
+
+#others div.left {
+    float: left;
+}
+
+#others div.right {
+    float: right;
+}
+
+
+#questions div.questions {
+    text-align: center;
+    font-size: 80px;
 }
 
 /*

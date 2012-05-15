@@ -262,7 +262,7 @@ end
 
     <!-- API: write facts -->
     <div id="facts" class="step" data-x="3500" data-y="1000">
-    You can use it with facter:
+    You can use them with facter:
     <pre>
 Facter.add(:augeasversion) do setcode do
     begin
@@ -282,7 +282,7 @@ end
     
 
     <!-- API: write types -->
-    <div id="types" class="step" data-x="3650" data-y="1830">
+    <div id="types" class="step" data-x="3700" data-y="1860">
     Or to write native types:
     <pre>
   def ip
@@ -304,12 +304,53 @@ end
     <!-- simple lens writing/modifying -->
 
     <!-- error tracking -->
+    <div id="errors" class="step" data-x="3000" data-y="3000">
+    Augeas reports its errors in /augeas:
+    <pre>
+augtool&gt; print /augeas//error
+/augeas/files/etc/mke2fs.conf/error = "parse_failed"
+/augeas/files/etc/mke2fs.conf/error/pos = "82"
+/augeas/files/etc/mke2fs.conf/error/line = "3"
+/augeas/files/etc/mke2fs.conf/error/char = "0"
+/augeas/files/etc/mke2fs.conf/error/lens = \
+   "/usr/share/augeas/lenses/dist/mke2fs.aug:132.10-.49:"
+/augeas/files/etc/mke2fs.conf/error/message = \
+   "Get did not match entire input"
+    </pre>
+    </div>
+   
 
     <!-- others: libvirt, validator -->
+    <div id="others" class="step" data-x="3000" data-y="4000">
+    Other projects using Augeas:<br /><br />
+    <div class="left">
+    <li><img src="img/120px-Libvirt_logo.svg.png" class="logo" /> libvirt</li>
+    <li><img src="img/nut-logo_med.png" class="logo" /> Nut</li>
+    </div>
+    <div class="right">
+    <li>guestfs</li>
+    <li>ZYpp</li>
+    <li><a href="https://github.com/raphink/config-augeas-validator">Augeas-validator</a></li>
+    </div>
+    </div>
+    
 
     <!-- future: mco 2.0, etc. -->
+    <div id="future" class="step" data-x="1500" data-y="4000">
+    Future projects:<br /><br />
+    <li>better integration in Mcollective 2.0</li>
+    <li>content validation in Puppet</li>
+    <li>...</li>
+    <li>your idea/project here...</li>
+    </div>
 
     <!-- questions/contacts -->
+    <div id="questions" class="step" data-x="-1000" data-y="4000">
+    <div class="questions">questions ?</div>
+    <div class="footnote"><a href="http://augeas.net">http://augeas.net</a></div>
+    <div class="footnote"><a href="http://www.redhat.com/mailman/listinfo/augeas-devel">augeas-devel@redhat.com</a></div>
+    <div class="footnote">freenode: #augeas</div>
+    </div>
 
     <div id="overview" class="step" data-x="-300" data-y="1000" data-scale="11">
     </div>
