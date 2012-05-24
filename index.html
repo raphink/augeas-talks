@@ -1,0 +1,372 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Become a configuration surgeons with Augeas | by Raphaël Pinson</title>
+    
+    <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com." />
+    <meta name="author" content="Bartek Szopka" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+
+    <link href="css/common.css" rel="stylesheet" />
+    
+    <link rel="shortcut icon" href="impress.js/favicon.png" />
+    <link rel="apple-touch-icon" href="impress.js/apple-touch-icon.png" />
+</head>
+
+<body class="impress-not-supported">
+
+<div id='conf-logo'>
+  <img src='img/lsm_logo.jpg' class='logo' width='150px' />
+</div>
+
+<div id='logos'>
+  <img src='img/augeas-logo-simple.png' class='logo' width='50px' />
+  <img src='img/camptocamp-logo.png' class='logo' width='50px' />
+</div>
+
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<!--
+    
+    Now that's the core element used by impress.js.
+    
+    That's the wrapper for your presentation steps. In this element all the impress.js magic happens.
+    It doesn't have to be a `<div>`. Only `id` is important here as that's how the script find it.
+    
+    You probably won't need it now, but there are some configuration options that can be set on this element.
+    
+    To change the duration of the transition between slides use `data-transition-duration="2000"` giving it
+    a number of ms. It defaults to 1000 (1s).
+    
+    You can also control the perspective with `data-perspective="500"` giving it a number of pixels.
+    It defaults to 1000. You can set it to 0 if you don't want any 3D effects.
+    If you are willing to change this value make sure you understand how CSS perspective works:
+    https://developer.mozilla.org/en/CSS/perspective
+    
+    But as I said, you won't need it for now, so don't worry - there are some simple but interesing things
+    right around the corner of this tag ;)
+    
+-->
+<div id="impress">
+
+    <div id="awksed" class="step" data-x="-1000" data-y="-2200" data-scale="3">
+        <q><center>Are you tired of ugly<br /> <b>sed</b> and <b>awk</b> one liners?</center></q>
+    </div>
+
+    <div id="libs" class="step" data-x="-1850" data-y="-2200" data-rotate="90">
+        <q>or of using <i>tons</i> of <br />
+           &nbsp;&nbsp;different parsing libraries<br />
+           &nbsp;&nbsp;&nbsp;&nbsp;or <b>common::line</b> tricks?</q>
+    </div>
+
+    <div id="title" class="step" data-x="0" data-y="0" data-scale="4">
+        <span class="become">Become a configuration<br />&nbsp;&nbsp; surgeon with</span>
+        <h1>Augeas</h1>
+        <span class="tree"><img src="img/augeas-logo-simple.png"  width='130px' /></span>
+    </div>
+
+    <!-- It's all about a tree -->
+    <div id="tree" class="step" data-x="-1000" data-y="3100">
+      <img class="bigtree" src="img/tree-high.png" width="900" />
+      <span class="tree-side">You have heard that files
+      are made from trees...</span>
+    </div>
+
+    <!-- and then move up -->
+    <div id="trunk" class="step" data-x="-1000" data-y="2700">
+      <span class="tree-side">Here configuration files
+      are turned into a tree structure...<br />
+      <pre>/etc/hosts -&gt; /files/etc/hosts</pre>
+      </span>
+    </div>
+
+    <!-- to the top -->
+    <div id="branches" class="step" data-x="-1000" data-y="2300">
+      <span class="tree-side">
+      ... and their parameters
+      into branches and leaves:<br />
+      <pre>
+$ augtool print /files/etc/hosts
+ /files/etc/hosts
+ /files/etc/hosts/1
+ /files/etc/hosts/1/ipaddr = "127.0.0.1"
+ /files/etc/hosts/1/canonical = "localhost"
+      </pre>
+      </span>
+    </div>
+
+    <!-- lenses -->
+    <div id="lenses" class="step" data-x="500" data-y="2300">
+       Augeas provides many stock parsers, called lenses:
+       <pre>
+Access		Cron		Host_Conf
+Aliases		Crypttab	Hostname
+Anacron		debctrl		Hosts_Access
+Approx		Desktop		IniFile
+AptConf		Dhcpd		Inputrc
+Automaster	Dpkg		Iptables
+Automounter	Exports		Kdump
+BackupPCHosts	FAI_DiskConfig	Keepalived
+cgconfig	Fonts		Keepalived
+cgrules		Fuse		Login_defs
+Channels	Grub		Mke2fs
+...
+       </pre>
+       <img id="lens" src="img/lens.png" />
+    </div>
+
+    <div id="lenses-generic" class="step" data-x="500" data-y="3000">
+       ... as well as generic lenses available to build new parsers:
+       <pre>
+Build		Sep			Simplelines
+IniFile		Shellvars		Simplevars
+Rx		Shellvars_list		Util
+       </pre>
+    </div>
+
+    <div id="augtool" class="step" data-x="-3500" data-y="-500">
+      <b>augtool</b> lets you inspect the tree:
+      <pre>
+$ augtool
+augtool&gt; ls /
+ augeas/ = (none)
+ files/ = (none)
+
+augtool&gt; print /files/etc/passwd/root/
+ /files/etc/passwd/root
+ /files/etc/passwd/root/password = "x"
+ /files/etc/passwd/root/uid = "0"
+ /files/etc/passwd/root/gid = "0"
+ /files/etc/passwd/root/name = "root"
+ /files/etc/passwd/root/home = "/root"
+ /files/etc/passwd/root/shell = "/bin/bash"
+      </pre>
+    </div>
+
+    <div id="xpath" class="step" data-x="-4000" data-y="200">
+      The tree can be queried using <b>XPath</b>: 
+      <pre>
+augtool&gt; print /files/etc/passwd/*[uid='0'][1]
+ /files/etc/passwd/root
+ /files/etc/passwd/root/password = "x"
+ /files/etc/passwd/root/uid = "0"
+ /files/etc/passwd/root/gid = "0"
+ /files/etc/passwd/root/name = "root"
+ /files/etc/passwd/root/home = "/root"
+ /files/etc/passwd/root/shell = "/bin/bash"
+      </pre>
+
+      <img id="path" src="img/path.png" />
+    </div>
+
+    <div id="modify" class="step" data-x="-4000" data-y="1000">
+      But also <i>modified</i>: 
+      <pre>
+$ getent passwd root
+root:x:0:0:root:/root:/bin/bash
+
+$ augtool
+augtool&gt; set /files/etc/passwd/*[uid='0']/shell /bin/sh
+augtool&gt; match /files/etc/passwd/*[uid='0']/shell
+ /files/etc/passwd/root/shell = "/bin/sh"
+augtool&gt; save
+Saved 1 file(s)
+augtool&gt; exit
+
+$ getent passwd root
+root:x:0:0:root:/root:/bin/sh
+      </pre>
+    </div>
+
+    <!-- puppet: type -->
+    <div id="puppet_type" class="step" data-x="-5200" data-y="1300" data-scale="0.7">
+      Puppet has a native provider:
+      <pre>
+augeas{ "export foo" : 
+    context =&gt; "/files/etc/exports",
+    changes =&gt; [
+        "set dir[. = '/foo'] /foo",
+        "set dir[. = '/foo']/client weeble",
+        "set dir[. = '/foo']/client/option[1] ro",
+        "set dir[. = '/foo']/client/option[2] all_squash",
+    ],
+} 
+      </pre>
+      <img id="kermit" src="img/kermit.png" />
+    </div>
+
+    <!-- puppet: idempotence -->
+
+    <!-- puppet: defines -->
+    <div id="puppet_wrap" class="step" data-x="-5000" data-y="800" data-scale="0.7">
+      It is better to wrap things up: 
+      <pre>
+define kmod::generic(
+  $type, $module, $ensure=present,
+  $command='', $file='/etc/modprobe.d/modprobe.conf'
+) {
+  augeas {"${type} module ${module}":
+    context =&gt; "/files${file}",
+    changes =&gt; [
+      "set ${type}[. = '${module}'] ${module}",
+      "set ${type}[. = '${module}']/command '${command}'",
+    ],
+  }
+}
+      </pre>
+    </div>
+
+    <!-- mco agent -->
+    <div id="mco_agent" class="step" data-x="-5200" data-y="0">
+    mcollective also has <a href="https://github.com/camptocamp/mcollective-plugins/tree/master/agent/augeasquery">an agent</a>:
+    <pre>
+$ mco augeas match /files/etc/passwd/rpinson/shell
+
+ * [ ======================================&gt; ] 196 / 196
+
+...
+wrk1                                    
+saja-map-dev                            
+    /files/etc/passwd/rpinson/shell = /bin/bash
+wrk3                                    
+wrk4                                    
+    /files/etc/passwd/rpinson/shell = /bin/bash
+...
+    </pre>
+    </div>
+
+    <!-- API: ruby -->
+    <div id="bindings" class="step" data-x="3500" data-y="0">
+    Bindings include Perl, Python, Java, PHP, Haskell, Ruby...
+    <pre>
+require 'augeas'
+aug = Augeas.open
+if aug.match('/augeas/load/'+lens).length &gt; 0
+  aug.set('/augeas/load/'+lens+'/incl[last()+1]', path)
+else
+  aug.set('/augeas/load/'+lens+'/lens', lens+'.lns')
+end
+    </pre>
+    <center class="footnote">From the mcollective agent</center>
+    <img id="chain" src="img/chain.png" />
+    </div>
+
+    <!-- API: write facts -->
+    <div id="facts" class="step" data-x="3500" data-y="1000">
+    You can use them with facter:
+    <pre>
+Facter.add(:augeasversion) do setcode do
+    begin
+      require 'augeas'
+      aug = Augeas::open('/', nil, Augeas::NO_MODL_AUTOLOAD)
+      ver = aug.get('/augeas/version')
+      aug.close
+      ver
+    rescue Exception
+      Facter.debug('ruby-augeas not available')
+    end
+  end
+end
+    </pre>
+    <center class="footnote">From the <code>augeasversion</code> fact</center>
+    </div>
+    
+
+    <!-- API: write types -->
+    <div id="types" class="step" data-x="3700" data-y="1860">
+    Or to write native types:
+    <pre>
+  def ip
+    aug = nil
+    path = "/files#{self.class.file(resource)}"
+    begin
+      aug = self.class.augopen(resource)
+      aug.get("#{path}/*[canonical =
+         '#{resource[:name]}']/ipaddr")
+    ensure
+      aug.close if aug
+    end
+  end
+    </pre>
+    <center class="footnote">See <a href="https://github.com/domcleal/augeasproviders">https://github.com/domcleal/augeasproviders</a></center>
+    </div>
+    
+
+    <!-- simple lens writing/modifying -->
+
+    <!-- error tracking -->
+    <div id="errors" class="step" data-x="3000" data-y="3000">
+    Augeas reports its errors in /augeas:
+    <pre>
+augtool&gt; print /augeas//error
+/augeas/files/etc/mke2fs.conf/error = "parse_failed"
+/augeas/files/etc/mke2fs.conf/error/pos = "82"
+/augeas/files/etc/mke2fs.conf/error/line = "3"
+/augeas/files/etc/mke2fs.conf/error/char = "0"
+/augeas/files/etc/mke2fs.conf/error/lens = \
+   "/usr/share/augeas/lenses/dist/mke2fs.aug:132.10-.49:"
+/augeas/files/etc/mke2fs.conf/error/message = \
+   "Get did not match entire input"
+    </pre>
+    </div>
+   
+
+    <!-- others: libvirt, validator -->
+    <div id="others" class="step" data-x="3000" data-y="4000">
+    Other projects using Augeas:<br /><br />
+    <div class="left">
+    <li><img src="img/120px-Libvirt_logo.svg.png" class="logo" /> libvirt</li>
+    <li><img src="img/nut-logo_med.png" class="logo" /> Nut</li>
+    </div>
+    <div class="right">
+    <li>guestfs</li>
+    <li>ZYpp</li>
+    <li><a href="https://github.com/raphink/config-augeas-validator">Augeas-validator</a></li>
+    </div>
+    </div>
+    
+
+    <!-- future: mco 2.0, etc. -->
+    <div id="future" class="step" data-x="1500" data-y="4000">
+    Future projects:<br /><br />
+    <li>better integration in Mcollective 2.0</li>
+    <li>content validation in Puppet</li>
+    <li>...</li>
+    <li>your idea/project here...</li>
+    </div>
+
+    <!-- questions/contacts -->
+    <div id="questions" class="step" data-x="-1000" data-y="4000">
+    <div class="questions">questions ?</div>
+    <div class="footnote"><a href="http://augeas.net">http://augeas.net</a></div>
+    <div class="footnote"><a href="http://www.redhat.com/mailman/listinfo/augeas-devel">augeas-devel@redhat.com</a></div>
+    <div class="footnote">freenode: #augeas</div>
+    </div>
+
+    <div id="overview" class="step" data-x="-300" data-y="1000" data-scale="11">
+    </div>
+
+
+<div class="hint">
+    <p>Use a spacebar or arrow keys to navigate</p>
+</div>
+<script>
+if ("ontouchstart" in document.documentElement) { 
+    document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+}
+</script>
+
+<script src="impress.js/js/impress.js"></script>
+<script>impress().init();</script>
+
+</body>
+</html>
