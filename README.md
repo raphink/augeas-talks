@@ -1,4 +1,0 @@
-augeas-talks
-============
-
-Augeas talks
