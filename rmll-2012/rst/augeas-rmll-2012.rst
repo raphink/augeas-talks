@@ -17,11 +17,6 @@
 Are you tired of ugly
 ``sed`` and ``awk`` one liners?
 
-
------------
-
-.. class:: center large
-
 or of using *tons* of different
 parsing libraries
 or ``common::line`` tricks?
@@ -77,10 +72,10 @@ But also *modified*
  $ getent passwd root
  root:x:0:0:root:/root:/bin/bash
 
+ $ augtool
 .. class:: small
 .. code-block:: augtool-shell
 
- $ augtool
  augtool> set /files/etc/passwd/*[uid='0']/shell /bin/sh
  augtool> match /files/etc/passwd/*[uid='0']/shell
  /files/etc/passwd/root/shell = "/bin/sh"
