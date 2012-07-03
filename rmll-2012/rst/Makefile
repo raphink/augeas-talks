@@ -2,7 +2,11 @@ MONO_FONT=Inconsolata
 TEMPLATE_FILE=/home/rpinson/Documents/template_presentation_5.otp
 PRESENTATION=augeas-rmll-2012
 
-all: $(PRESENTATION).odp
+all: pdf
+
+odp: $(PRESENTATION).odp
+
+pdf: $(PRESENTATION).pdf
 
 %.odp: %.rst
 	rst2odp --mono-font $(MONO_FONT) \
