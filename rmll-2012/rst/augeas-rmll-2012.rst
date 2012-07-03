@@ -15,11 +15,11 @@
 .. class:: center large
 
 Are you tired of ugly
-``sed`` and ``awk`` one liners?
+**sed** and **awk** one liners?
 
 or of using *tons* of different
 parsing libraries
-or ``common::line`` tricks?
+or **common::line** tricks?
 
 
 -----------
@@ -39,7 +39,7 @@ Augeas
 A tree
 --------
 
-Augeas turns configuration files into a tree structure
+Augeas turns configuration files into a tree structure:
 
 .. class:: small
 .. code-block:: augtool-shell
@@ -50,7 +50,7 @@ Augeas turns configuration files into a tree structure
 Its branches and leaves
 ------------------------
 
-... and their parameters into branches and leaves
+... and their parameters into branches and leaves:
 
 
 .. class:: small
@@ -228,6 +228,15 @@ mcollective has an agent
  wrk4                                    
      /files/etc/passwd/rpinson/shell = /bin/bash
  ...
+
+
+... and mcollective 2.0 uses it for discovery
+----------------------------------------------
+
+.. class:: small
+.. code-block:: bash
+
+ $ mco find -S "augeas_match(/files/etc/passwd/rip).size = 0"
     
 
 Bindings include Perl, Python, Java, PHP, Haskell, Ruby...
@@ -289,7 +298,7 @@ Or to write native types (recommended)
      ensure
        aug.close if aug
      end
-   end
+ end
 .. ** Relax, vim
     
 
@@ -351,7 +360,6 @@ Questions?
 
 
 .. slide-design:: Default 2
-
 
 --------------
 
