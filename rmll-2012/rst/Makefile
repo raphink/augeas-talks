@@ -15,3 +15,6 @@ pdf: $(PRESENTATION).pdf
 
 %.pdf: %.odp
 	odp2pdf $<
+
+clean:
+	rm -f *.odp *.pdf
