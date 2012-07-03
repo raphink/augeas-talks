@@ -8,3 +8,6 @@ all: $(PRESENTATION).odp
 	rst2odp --mono-font $(MONO_FONT) \
 	  --template-file $(TEMPLATE_FILE) \
 	  $< $@
+
+%.pdf: %.odp
+	odp2pdf $<
