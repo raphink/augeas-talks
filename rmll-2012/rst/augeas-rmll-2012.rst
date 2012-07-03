@@ -8,6 +8,8 @@
 :Event: LSM 2012, Geneva
 :Date: 2012-07-11
 
+.. slide-design:: Default 1
+
 -----------
 
 .. class:: center large
