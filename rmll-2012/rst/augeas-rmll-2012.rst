@@ -348,3 +348,13 @@ Questions?
  augeas-devel@redhat.com
 
  freenode: #augeas
+
+
+.. slide-design:: Default 2
+
+
+--------------
+
+.. that's all folks!
+
+
