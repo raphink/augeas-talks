@@ -1,4 +1,5 @@
 MONO_FONT=Inconsolata
+FONT=Eau
 PRESENTATION=augeas-rmll-2012
 PYGMENTS_STYLE=tango
 ODP_TEMPLATE=/home/rpinson/Documents/template_presentation_5.otp
@@ -14,6 +15,7 @@ s5: $(PRESENTATION).html
 
 %.odp: %.rst
 	rst2odp --mono-font $(MONO_FONT) \
+	  --font $(FONT) \
 	  --template-file $(ODP_TEMPLATE) \
 	  --pygments-style $(PYGMENTS_STYLE) \
 	  $< $@
