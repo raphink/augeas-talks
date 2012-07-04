@@ -25,7 +25,7 @@ Become a configuration surgeon with
 ------------------------------------
 
 
-.. class:: huge
+.. class:: center huge
 
 Augeas
 
