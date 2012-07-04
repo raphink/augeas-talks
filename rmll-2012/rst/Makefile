@@ -1,13 +1,16 @@
 MONO_FONT=Inconsolata
-TEMPLATE_FILE=/home/rpinson/Documents/template_presentation_5.otp
 PRESENTATION=augeas-rmll-2012
 PYGMENTS_STYLE=tango
+ODP_TEMPLATE=/home/rpinson/Documents/template_presentation_5.otp
+S5_TEMPLATE=ui/c2c
 
 all: pdf
 
 odp: $(PRESENTATION).odp
 
 pdf: $(PRESENTATION).pdf
+
+s5: $(PRESENTATION).html
 
 %.odp: %.rst
 	rst2odp --mono-font $(MONO_FONT) \
@@ -17,6 +20,12 @@ pdf: $(PRESENTATION).pdf
 
 %.pdf: %.odp
 	odp2pdf $<
+
+%.html: %.rst
+	python rst2s5.py \
+	  --stylesheet=pygments.css \
+	  --theme-url=$(S5_TEMPLATE) \
+	  $< > $@
 
 clean:
 	rm -f *.odp *.pdf

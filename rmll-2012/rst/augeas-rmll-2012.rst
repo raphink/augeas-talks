@@ -10,23 +10,20 @@
 
 .. slide-design:: Default 1
 
------------
+Tired of ugly **sed** and **awk** one liners?
+----------------------------------------------
 
 .. class:: center large
 
-Are you tired of ugly
-**sed** and **awk** one liners?
 
 or of using *tons* of different
 parsing libraries
 or **common::line** tricks?
 
 
------------
-
-.. class:: center large
-
 Become a configuration surgeon with
+------------------------------------
+
 
 .. class:: huge
 
