@@ -30,4 +30,4 @@ s5: $(PRESENTATION).html
 	  $< > $@
 
 clean:
-	rm -f *.odp *.pdf
+	rm -f *.odp *.pdf *.html
