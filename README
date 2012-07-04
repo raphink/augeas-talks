@@ -1,0 +1,10 @@
+For the rst talk
+----------------
+
+Install docutils
+Install rst2odp from https://github.com/mattharrison/rst2odp
+Install unoconv
+
+
+Type `make`
+
