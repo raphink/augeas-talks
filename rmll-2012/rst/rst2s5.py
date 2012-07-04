@@ -40,12 +40,12 @@
 
 # Set to True if you want inline CSS styles instead of classes
 INLINESTYLES = False
-STYLE = "fruity"
+PYGMENTS_STYLE = "fruity" # default
 
 from pygments.formatters import HtmlFormatter
 
 # The default formatter
-DEFAULT = HtmlFormatter(noclasses=INLINESTYLES, style=STYLE)
+DEFAULT = HtmlFormatter(noclasses=INLINESTYLES, style=PYGMENTS_STYLE)
 
 # Add name -> formatter pairs for every variant you want to use
 VARIANTS = {
@@ -53,7 +53,7 @@ VARIANTS = {
 }
 
 
-from docutils import nodes
+from docutils import nodes, SettingsSpec
 from docutils.parsers.rst import directives, Directive
 
 from pygments import highlight
@@ -101,5 +101,17 @@ from docutils.core import publish_cmdline, default_description
 description = ('Generates S5 (X)HTML slideshow documents from standalone '
                'reStructuredText sources.  ' + default_description)
 
-publish_cmdline(writer_name='s5', description=description)
+settings_spec = SettingsSpec()
+settings_spec.settings_spec = (
+    'S5 Wrapper Specific Options', # option group title
+    None, # Description
+    ( # options (help string, list of options, dictions of OptionParser.add_option dists)
+        ('Specify a Pygments style (see pygmentize -L styles)',
+	 ['--pygments-style'],
+	 {'action': 'store',
+          'dest': 'pygments_style'}),
+    )
+  )
+
+publish_cmdline(writer_name='s5', description=description, settings_spec=settings_spec)
 
