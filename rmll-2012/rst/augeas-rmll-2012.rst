@@ -24,13 +24,13 @@ or **common::line** tricks?
 Become a configuration surgeon with
 ------------------------------------
 
-
-.. class:: center huge
-
-Augeas
-
+  
 .. image:: img/augeas-logo-simple.png
-   :align: right
+   :align: center
+         
+.. class:: center huge
+        
+ Augeas
 
 
 A tree
