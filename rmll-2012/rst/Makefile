@@ -14,7 +14,7 @@ s5: $(PRESENTATION).html
 
 %.odp: %.rst
 	rst2odp --mono-font $(MONO_FONT) \
-	  --template-file $(TEMPLATE_FILE) \
+	  --template-file $(ODP_TEMPLATE) \
 	  --pygments-style $(PYGMENTS_STYLE) \
 	  $< $@
 
