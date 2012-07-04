@@ -4,7 +4,7 @@ PYGMENTS_STYLE=tango
 ODP_TEMPLATE=/home/rpinson/Documents/template_presentation_5.otp
 S5_TEMPLATE=ui/c2c
 
-all: pdf
+all: odp pdf s5
 
 odp: $(PRESENTATION).odp
 
