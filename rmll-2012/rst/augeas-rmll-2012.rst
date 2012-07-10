@@ -702,6 +702,7 @@ Future projects
 * DBUS provider
 * content validation in Puppet (validator)
 * integration in package managers
+* finish the Augeas book
 * ...
 * your idea/project here...
 
