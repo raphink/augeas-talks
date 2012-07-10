@@ -20,6 +20,12 @@ or of using *tons* of different
 parsing libraries
 or **common::line** tricks?
 
+.. class:: handout
+
+  Everything that is in this block will only be in the notes.
+    You can put these on each slide.
+
+
 
 Become a configuration surgeon with
 ------------------------------------
@@ -31,6 +37,14 @@ Become a configuration surgeon with
 .. class:: center huge
         
  Augeas
+
+
+What is the need?
+-----------------
+
+A lot of different syntaxes
+
+Securely editing configuration files with a unified API
 
 
 A tree
@@ -227,8 +241,8 @@ mcollective has an agent
  ...
 
 
-... and mcollective 2.0 uses it for discovery
-----------------------------------------------
+... and uses it for discovery
+------------------------------
 
 .. class:: small
 .. code-block:: bash
@@ -279,8 +293,8 @@ The Ruby bindings can be used in Facter
  (From the augeasversion fact)
 
 
-Or to write native types (recommended)
---------------------------------------
+Or to write native types
+-------------------------
 
 .. class:: small
 .. code-block:: ruby
@@ -304,7 +318,352 @@ Or to write native types (recommended)
  (See https://github.com/domcleal/augeasproviders)
 
 
-Augeas reports its errors in the ``/augeas`` tree
+The case of sshd_config
+------------------------
+
+Custom type:
+
+.. class:: small
+.. code-block:: puppet
+
+  define ssh::config::sshd ($ensure='present', $value='') {
+
+    case $ensure {
+      'present': { $changes = "set ${name} ${value}" }
+
+      'absent': { $changes = "rm ${name}" }
+
+      'default': { fail("Wrong value for ensure: ${ensure}") }
+    }
+
+    augeas {"Set ${name} in /etc/ssh/sshd_config":
+      context => '/files/etc/ssh/sshd_config',
+      changes => $changes,
+    }
+  }
+
+Using the custom type for sshd_config
+--------------------------------------
+
+.. class:: small
+.. code-block:: puppet
+
+    ssh::config::sshd {'PasswordAuthenticator':
+      value => 'yes',
+    }
+
+
+The problem with sshd_config
+-----------------------------
+
+Match groups:
+
+.. class:: small
+.. code-block:: bash
+
+  Match Host example.com
+    PermitRootLogin no
+
+=> Not possible with ``ssh::config::sshd``, requires insertions and looping through the configuration parameters.
+
+
+A native provider for sshd_config (1)
+--------------------------------------
+
+The type:
+
+.. class:: tiny
+.. code-block:: ruby
+
+  Puppet::Type.newtype(:sshd_config) do
+    ensurable
+  
+    newparam(:name) do
+      desc "The name of the entry."
+      isnamevar
+    end
+  
+    newproperty(:value) do
+      desc "Entry value."
+    end
+  
+    newproperty(:target) do
+      desc "File target."
+    end
+  
+    newparam(:condition) do
+      desc "Match group condition for the entry."
+    end
+  end
+
+
+A native provider for sshd_config (2)
+--------------------------------------
+
+The provider:
+
+.. class:: tiny
+.. code-block:: ruby
+
+  require 'augeas' if Puppet.features.augeas?
+  
+  Puppet::Type.type(:sshd_config).provide(:augeas) do
+    desc "Uses Augeas API to update an sshd_config parameter"
+  
+    def self.file(resource = nil)
+      file = "/etc/ssh/sshd_config"
+      file = resource[:target] if resource and resource[:target]
+      file.chomp("/")
+    end
+  
+    confine :true   => Puppet.features.augeas? 
+    confine :exists => file
+
+A native provider for sshd_config (3)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def self.augopen(resource = nil)
+    aug = nil
+    file = file(resource)
+    begin
+      aug = Augeas.open(nil, nil, Augeas::NO_MODL_AUTOLOAD)
+      aug.transform(
+        :lens => "Sshd.lns",
+        :name => "Sshd",
+        :incl => file
+      )
+      aug.load!
+
+      if aug.match("/files#{file}").empty?
+        message = aug.get("/augeas/files#{file}/error/message")
+        fail("Augeas didn't load #{file}: #{message}")
+      end
+    rescue
+      aug.close if aug
+      raise
+    end
+    aug
+  end
+
+
+A native provider for sshd_config (4)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def self.instances
+    aug = nil
+    path = "/files#{file}"
+    entry_path = self.class.entry_path(resource)
+    begin
+      resources = []
+      aug = augopen
+      aug.match(entry_path).each do |hpath|
+        entry = {}
+        entry[:name] = resource[:name]
+        entry[:conditions] = Hash[*resource[:condition].split(' ').flatten(1)]
+        entry[:value] = aug.get(hpath)
+
+        resources << new(entry)
+      end
+      resources
+    ensure
+      aug.close if aug
+    end
+  end
+.. ** relax, vim
+
+A native provider for sshd_config (5)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def self.match_conditions(resource=nil)
+    if resource[:condition]
+      conditions = Hash[*resource[:condition].split(' ').flatten(1)]
+      cond_keys = conditions.keys.length
+      cond_str = "[count(Condition/*)=#{cond_keys}]"
+      conditions.each do |k,v|
+        cond_str += "[Condition/#{k}=\"#{v}\"]"
+      end
+      cond_str
+    else
+      ""
+    end
+  end
+
+  def self.entry_path(resource=nil)
+    path = "/files#{self.file(resource)}"
+    if resource[:condition]
+      cond_str = self.match_conditions(resource)
+      "#{path}/Match#{cond_str}/Settings/#{resource[:name]}"
+    else
+      "#{path}/#{resource[:name]}"
+    end
+  end
+
+
+A native provider for sshd_config (6)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def self.match_exists?(resource=nil)
+    aug = nil
+    path = "/files#{self.file(resource)}"
+    begin
+      aug = self.augopen(resource)
+      if resource[:condition]
+        cond_str = self.match_conditions(resource)
+      else
+        false
+      end
+      not aug.match("#{path}/Match#{cond_str}").empty?
+    ensure
+      aug.close if aug
+    end
+  end
+
+A native provider for sshd_config (7)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def exists? 
+    aug = nil
+    entry_path = self.class.entry_path(resource)
+    begin
+      aug = self.class.augopen(resource)
+      not aug.match(entry_path).empty?
+    ensure
+      aug.close if aug
+    end
+  end
+
+  def self.create_match(resource=nil, aug=nil)
+    path = "/files#{self.file(resource)}"
+    begin
+      aug.insert("#{path}/*[last()]", "Match", false)
+      conditions = Hash[*resource[:condition].split(' ').flatten(1)]
+      conditions.each do |k,v|
+        aug.set("#{path}/Match[last()]/Condition/#{k}", v)
+      end
+      aug
+    end
+  end
+.. ** relax, vim
+
+A native provider for sshd_config (8)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def create 
+    aug = nil
+    path = "/files#{self.class.file(resource)}"
+    entry_path = self.class.entry_path(resource)
+    begin
+      aug = self.class.augopen(resource)
+      if resource[:condition] 
+        unless self.class.match_exists?(resource)
+          aug = self.class.create_match(resource, aug)
+        end
+      else
+        unless aug.match("#{path}/Match").empty?
+          aug.insert("#{path}/Match[1]", resource[:name], true)
+        end
+      end
+      aug.set(entry_path, resource[:value])
+      aug.save!
+    ensure
+      aug.close if aug
+    end
+  end
+
+A native provider for sshd_config (9)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def destroy
+    aug = nil
+    path = "/files#{self.class.file(resource)}"
+    begin
+      aug = self.class.augopen(resource)
+      entry_path = self.class.entry_path(resource)
+      aug.rm(entry_path)
+      aug.rm("#{path}/Match[count(Settings/*)=0]")
+      aug.save!
+    ensure
+      aug.close if aug
+    end
+  end
+
+  def target
+    self.class.file(resource)
+  end
+.. ** relax, vim
+
+A native provider for sshd_config (10)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def value
+    aug = nil
+    path = "/files#{self.class.file(resource)}"
+    begin
+      aug = self.class.augopen(resource)
+      entry_path = self.class.entry_path(resource)
+      aug.get(entry_path)
+    ensure
+      aug.close if aug
+    end
+  end
+
+A native provider for sshd_config (11)
+--------------------------------------
+
+.. class:: tiny
+.. code-block:: ruby
+
+  def value=(thevalue)
+    aug = nil
+    path = "/files#{self.class.file(resource)}"
+    begin
+      aug = self.class.augopen(resource)
+      entry_path = self.class.entry_path(resource)
+      aug.set(entry_path, thevalue)
+      aug.save!
+    ensure
+      aug.close if aug
+    end
+  end
+
+
+Using the native provider for sshd_config
+------------------------------------------
+
+.. class:: small
+.. code-block:: puppet
+
+  sshd_config {'PermitRootLogin':
+    ensure    => present,
+    condition => 'Host example.com',
+    value     => 'yes',
+  }
+
+Errors are reported in the ``/augeas`` tree
 --------------------------------------------------
 
 .. class:: small
@@ -327,6 +686,7 @@ Other projects using Augeas
 .. class:: incremental
 
 * libvirt
+* rpm
 * Nut
 * guestfs
 * ZYpp
@@ -338,8 +698,10 @@ Future projects
 
 .. class:: incremental
 
-* better integration in Mcollective 2.0
-* content validation in Puppet
+* more native providers
+* DBUS provider
+* content validation in Puppet (validator)
+* integration in package managers
 * ...
 * your idea/project here...
 
