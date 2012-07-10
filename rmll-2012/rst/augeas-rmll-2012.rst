@@ -7,6 +7,8 @@
 :Author: Raphaël Pinson
 :Event: LSM 2012, Geneva
 :Date: 2012-07-11
+:Slides: http://r.pinson.free.fr/augeas/talks/rmll-2012/
+:Git: https://github.com/raphink/augeas-talks/
 
 .. slide-design:: Default 1
 
