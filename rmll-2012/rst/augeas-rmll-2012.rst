@@ -313,6 +313,13 @@ mcollective has an agent
      /files/etc/passwd/rpinson/shell = /bin/bash
  ...
 
+.. class:: handout
+
+  Allows to query augeas with match statements.
+
+  Can be useful to test for existing users, parameters,
+  mount points, etc. without writing a custom fact.
+
 
 ... and uses it for discovery
 ------------------------------
@@ -322,6 +329,12 @@ mcollective has an agent
 
  $ mco find -S "augeas_match(/files/etc/passwd/rip).size = 0"
     
+.. class:: handout
+
+  Augeas used as a plugin for discovery.
+
+  Allows to filter nodes on Augeas conditions (users, mount points, etc.)
+
 
 Bindings include Perl, Python, Java, PHP, Haskell, Ruby...
 -----------------------------------------------------------
@@ -341,6 +354,11 @@ Bindings include Perl, Python, Java, PHP, Haskell, Ruby...
 
  (From the mcollective agent)
 
+.. class:: handout
+
+  I'll only show ruby examples, since this is a Puppetcamp,
+  but e.g. Augeas::Validator is written in Perl.
+
 
 The Ruby bindings can be used in Facter
 ----------------------------------------
@@ -348,7 +366,8 @@ The Ruby bindings can be used in Facter
 .. class:: small
 .. code-block:: ruby
 
- Facter.add(:augeasversion) do setcode do
+ Facter.add(:augeasversion) do
+   setcode do
      begin
        require 'augeas'
        aug = Augeas::open('/', nil, Augeas::NO_MODL_AUTOLOAD)
@@ -365,6 +384,10 @@ The Ruby bindings can be used in Facter
 
  (From the augeasversion fact)
 
+.. class:: handout
+
+  Easy to prototype with mcollective now.
+  
 
 Or to write native types
 -------------------------
@@ -391,6 +414,17 @@ Or to write native types
  (See https://github.com/domcleal/augeasproviders)
 
 
+.. class:: handout
+
+  Dominic Cleal, creator of the Augeas provider for Puppet,
+  started this augeasproviders project (on github) to rewrite
+  native providers using Augeas as a parsing library.
+
+  I really think this is the best way to use Augeas in Puppet.
+ 
+  I will give a full example of a provider using Augeas next.
+
+
 The case of sshd_config
 ------------------------
 
@@ -414,6 +448,7 @@ Custom type:
       changes => $changes,
     }
   }
+
 
 Using the custom type for sshd_config
 --------------------------------------
@@ -749,6 +784,11 @@ Errors are reported in the ``/augeas`` tree
      "/usr/share/augeas/lenses/dist/mke2fs.aug:132.10-.49:"
   /augeas/files/etc/mke2fs.conf/error/message = \
      "Get did not match entire input"
+
+
+.. class:: handout
+
+  The ``//`` stands for "any sublevel" (XPath).
 
 
 Other projects using Augeas
