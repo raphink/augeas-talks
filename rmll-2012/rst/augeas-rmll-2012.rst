@@ -22,9 +22,10 @@ or **common::line** tricks?
 
 .. class:: handout
 
-  Everything that is in this block will only be in the notes.
-    You can put these on each slide.
-
+  * Several approaches to configuration management
+    - provide the whole file: templa => often ugly
+    - in-place replacement : sed/awk
+  * Augeas provides a unified API
 
 
 Become a configuration surgeon with
@@ -38,14 +39,21 @@ Become a configuration surgeon with
         
  Augeas
 
+.. class:: handout
+
+  RedHat emerging project, but usable on most Unix systems
 
 What is the need?
 -----------------
 
-A lot of different syntaxes
+* A lot of different syntaxes
 
-Securely editing configuration files with a unified API
+* Securely editing configuration files with a unified API
 
+.. class:: handout
+
+  * fstab, hosts, sudoers, ntp...
+  * tons of different parsers
 
 A tree
 --------
@@ -56,6 +64,12 @@ Augeas turns configuration files into a tree structure:
 .. code-block:: augtool-shell
 
  /etc/hosts -> /files/etc/hosts
+
+
+.. class:: handout
+
+  It is based on studies that aimed to provide mapping
+  between XML and native formats
 
 
 Its branches and leaves
@@ -72,6 +86,11 @@ Its branches and leaves
    /files/etc/hosts/1
    /files/etc/hosts/1/ipaddr = "127.0.0.1"
    /files/etc/hosts/1/canonical = "localhost"
+
+.. class:: handout
+
+  * Each node can have one optional value, as well as one or more children
+  * There are two root nodes: /augeas and /files (more in version to come)
 
 
 Augeas provides many stock parsers
@@ -96,6 +115,13 @@ They are called *lenses*:
  ...
 
 
+.. class:: handout
+
+  Most basic formats are provided in Augeas
+  We encourage projects to make their own lenses
+  and provide them with their code (case of e.g. nut)
+
+
 ... as well as generic lenses
 -----------------------------
 
@@ -107,6 +133,11 @@ available to build new parsers:
  Build          Sep                     Simplelines
  IniFile        Shellvars               Simplevars
  Rx             Shellvars_list          Util
+
+.. class:: handout
+
+  As more and more lenses were written, we saw patterns
+  and common needs. These lenses provide generic constructs.
 
 
 ``augtool`` lets you inspect the tree
@@ -137,6 +168,16 @@ available to build new parsers:
   /files/etc/passwd/root/shell = "/bin/bash"
 
 
+.. class:: handout
+
+  It is often recommended to prototype with augtool
+  before writing puppet/ruby/perl/whatever code
+  as augtool make it much easier.
+
+  You can however also use augtool in shell, 
+  or even as an interpreter (with a shebang)
+
+
 The tree can be queried using ``XPath``
 ----------------------------------------
 
@@ -152,6 +193,11 @@ The tree can be queried using ``XPath``
   /files/etc/passwd/root/home = "/root"
   /files/etc/passwd/root/shell = "/bin/bash"
 .. ** Relax, vim
+
+
+.. class:: handout
+
+  It's not really standard XPath, but really inspired.
 
 
 But also *modified*
@@ -183,6 +229,14 @@ But also *modified*
  root:x:0:0:root:/root:/bin/sh
 
 
+.. class:: handout
+
+  You can modify a single parameter without affecting the rest
+  of the file, such as spaces, indentations, comments...
+
+  Hence the idea that augeas is kind of a 'surgeon' tool
+
+
 
 Puppet has a native provider
 -----------------------------
@@ -199,6 +253,16 @@ Puppet has a native provider
          "set dir[. = '/foo']/client/option[2] all_squash",
      ],
  } 
+
+.. class:: handout
+
+  Often quite slow unless you use "context".
+
+  There is a "onlyif" parameter, but it's hardly ever useful anymore
+  since the provider does automatic idempotent changes.
+  
+  In the new version of Puppet, it will be faster by using context
+  to restrict the lenses/files loaded.
 
 
 It is better to wrap things up
@@ -220,6 +284,15 @@ It is better to wrap things up
      ],
    }
  }
+
+
+.. class:: handout
+
+  Users usually don't want to use touch Augeas.
+
+  Keep it deep in the code (ideally, as we'll see, in native providers)
+  by wrapping it in definitions.
+
 
 mcollective has an agent
 -------------------------
