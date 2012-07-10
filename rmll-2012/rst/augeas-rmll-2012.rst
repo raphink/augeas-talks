@@ -811,6 +811,9 @@ Future projects
 
 .. class:: incremental
 
+* more API calls
+* improved XPath syntax
+* more lenses
 * more native providers
 * DBUS provider
 * content validation in Puppet (validator)
@@ -818,6 +821,11 @@ Future projects
 * finish the Augeas book
 * ...
 * your idea/project here...
+
+.. class:: handout
+
+ * API calls: store/retrieve
+ * XPath syntax: case insensitive
 
 
 Questions?
