@@ -803,7 +803,8 @@ Other projects using Augeas
 * Nut
 * guestfs
 * ZYpp
-* Augeas-validator
+* Config::Model
+* Augeas::Validator
 
 
 Future projects
