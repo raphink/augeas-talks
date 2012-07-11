@@ -5,6 +5,7 @@
 ===================================
 
 :Author: Raphaël Pinson
+:Twitter: @raphink
 :Event: LSM 2012, Geneva
 :Date: 2012-07-11
 :Slides: http://r.pinson.free.fr/augeas/talks/rmll-2012/
